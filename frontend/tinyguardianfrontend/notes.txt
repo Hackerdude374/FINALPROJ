@@ -1,0 +1,31 @@
+134.0,0.001,0.0,0.013,0.008,0.0,0.003,29.0,6.3,0.0,0.0,150.0,50.0,200.0,6.0,3.0,71.0,107.0,106.0,215.0,0.0,3.0
+
+^ sample input 
+
+input fields :
+baseline value,
+accelerations,
+fetal_movement,
+uterine_contractions,
+light_decelerations,
+severe_decelerations,
+prolongued_decelerations,
+abnormal_short_term_variability,
+mean_value_of_short_term_variability,
+percentage_of_time_with_abnormal_long_term_variability,
+mean_value_of_long_term_variability,
+histogram_width,
+histogram_min,
+histogram_max,
+histogram_number_of_peaks,
+histogram_number_of_zeroes,
+histogram_mode,
+histogram_mean,
+histogram_median,
+histogram_variance,
+histogram_tendency,
+
+
+
+output:
+fetal_health
