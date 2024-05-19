@@ -1,53 +1,53 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './Form.css';
 
 function Form() {
   const [form, setForm] = useState({
-    1: "",
-    2: "",
-    3: "",
-    4: "",
-    5: "",
-    6: "",
-    7: "",
-    8: "",
-    9: "",
-    10: "",
-    11: "",
-    12: "",
-    13: "",
-    14: "",
-    15: "",
-    16: "",
-    17: "",
-    18: "",
-    19: "",
-    20: "",
-    21: "",
-    22: ""
+    baseline_value: "",
+    accelerations: "",
+    fetal_movement: "",
+    uterine_contractions: "",
+    light_decelerations: "",
+    severe_decelerations: "",
+    prolongued_decelerations: "",
+    abnormal_short_term_variability: "",
+    mean_value_of_short_term_variability: "",
+    percentage_of_time_with_abnormal_long_term_variability: "",
+    mean_value_of_long_term_variability: "",
+    histogram_width: "",
+    histogram_min: "",
+    histogram_max: "",
+    histogram_number_of_peaks: "",
+    histogram_number_of_zeroes: "",
+    histogram_mode: "",
+    histogram_mean: "",
+    histogram_median: "",
+    histogram_variance: "",
+    histogram_tendency: ""
   });
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState(""); //result display
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+  
     const form_data = new FormData();
-    for (let key in form) {
-      form_data.append(key, form[key]);
-    }
-
+    Object.entries(form).forEach(([key, value]) => {
+      form_data.append(key, value);
+    });
+  
     fetch('http://127.0.0.1:5000/predict', {
       method: 'POST',
       body: form_data
     })
-    .then(response => response.text())
-    .then(html => {
-      setResult(html);
+    .then(response => response.json()) // Assuming response is JSON
+    .then(data => {
+      setResult(data.pred);
     })
     .catch(error => {
       console.error('Error:', error);
     });
   };
+  
 
   const onChange = (event) => {
     const name = event.target.name;
@@ -55,30 +55,37 @@ function Form() {
     setForm({ ...form, [name]: value });
   };
 
+  const columns = [
+    'baseline_value', 'accelerations', 'fetal_movement', 'uterine_contractions',
+    'light_decelerations', 'severe_decelerations', 'prolongued_decelerations',
+    'abnormal_short_term_variability', 'mean_value_of_short_term_variability',
+    'percentage_of_time_with_abnormal_long_term_variability',
+    'mean_value_of_long_term_variability', 'histogram_width', 'histogram_min',
+    'histogram_max', 'histogram_number_of_peaks', 'histogram_number_of_zeroes',
+    'histogram_mode', 'histogram_mean', 'histogram_median', 'histogram_variance',
+    'histogram_tendency'
+  ];
+
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit}>
-        <h4 className="form-title">Diabeat: The #1 Diabetes Prediction Model</h4>
+        <h4 className="form-title">Fetal Health Prediction</h4>
         <div className="form-column">
-          <input
-            type="text"
-            name="1"
-            onChange={onChange}
-            placeholder="Input 1"
-            className="form-input"
-          />
-          <input
-            type="text"
-            name="2"
-            onChange={onChange}
-            placeholder="Input 2"
-            className="form-input"
-          />
-          {/* Add the rest of the input fields */}
+          {columns.map((column, index) => (
+            <input
+              key={index}
+              type="number"
+              step="0.01" // Allow decimals
+              name={column}
+              onChange={onChange}
+              placeholder={column.replace(/_/g, " ")} // Replace underscores with spaces for placeholder text
+              className="form-input"
+            />
+          ))}
         </div>
-        <button type="submit" className="form-button">Submit Form</button>
-        {result && <div dangerouslySetInnerHTML={{ __html: result }} className="result" />}
+        <button type="submit" className="form-button">Predict</button>
       </form>
+      {result && <div className="result">{result}</div>}
     </div>
   );
 }
