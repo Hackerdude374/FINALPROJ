@@ -15,6 +15,16 @@ def template_deploy():
     return render_template("index.html") #frontend calling
 
 #input form
+def interpret_fetal_health(prediction):
+    if prediction == 1.0:
+        return "Normal"
+    elif prediction == 2.0:
+        return "Suspicious - Needs more info"
+    elif prediction == 3.0:
+        return "Pathological"
+    else:
+        return "Invalid prediction"
+    
 @app.route('/predict', methods=['POST', 'GET'])
 # Function to interpret the predictions
 def predict():
@@ -51,12 +61,14 @@ def predict():
                                         input_14, input_15, input_16, input_17, 
                                         input_18, input_19, input_20, input_21])])
     fetal_prediction=model.predict_proba(setup_df)
+    prediction = model.predict(setup_df)[0]
+    interpretation = interpret_fetal_health(prediction) #ashwin predcition
     output='{0:.{1}f}'.format(fetal_prediction[0][1], 2)
     output = str(float(output)*100)+'%'
     if output>str(0.5):
-        return render_template('result.html',pred=f'You have the following chance of having fetal disease based on our RF model.\nProbability of having fetal disease is {output}')
+        return render_template('result.html',pred=f'You have the following chance of having fetal disease based on our RF model.\nProbability of having fetal disease is {output} Interpretation: {interpretation}')
     else:
-        return render_template('result.html',pred=f'You have a low chance of fetal disease which is currently considered safe (this is only an example, please consult a certified doctor for any medical advice).\n Probability of having diabetes is {output}')
+        return render_template('result.html',pred=f'You have a low chance of fetal disease which is currently considered safe (this is only an example, please consult a certified doctor for any medical advice).\n Probability of having fetal disease is {output} Interpretation: {interpretation}')
     
     
 
