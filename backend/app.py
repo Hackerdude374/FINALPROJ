@@ -15,7 +15,7 @@ def template_deploy():
     return render_template("index.html") #frontend calling
 
 #input form
-
+@app.route('/predict', methods=['POST', 'GET'])
 # Function to interpret the predictions
 def predict():
     input_1 = request.form['1']
@@ -54,7 +54,7 @@ def predict():
     output='{0:.{1}f}'.format(fetal_prediction[0][1], 2)
     output = str(float(output)*100)+'%'
     if output>str(0.5):
-        return render_template('result.html',pred=f'You have the following chance of having fetal disease based on our RF model.\nProbability of having Diabetes is {output}')
+        return render_template('result.html',pred=f'You have the following chance of having fetal disease based on our RF model.\nProbability of having fetal disease is {output}')
     else:
         return render_template('result.html',pred=f'You have a low chance of fetal disease which is currently considered safe (this is only an example, please consult a certified doctor for any medical advice).\n Probability of having diabetes is {output}')
     
