@@ -21,7 +21,7 @@ y_train_pred = rf_classifier.predict(X_train)
 y_test_pred = rf_classifier.predict(X_test)
 
 
-pickle.dump(rf_classifier, open('example_weights_rf_classifier.pkl', "wb" ))
+pickle.dump(rf_classifier, open('example_weights_rf_classifier.pkl', "wb"))
 
 # def interpret_fetal_health(prediction):
 #     if prediction == 1.0:
