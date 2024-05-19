@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-
+import pickle
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
@@ -20,7 +20,7 @@ y_train_pred = rf_classifier.predict(X_train)
 
 y_test_pred = rf_classifier.predict(X_test)
 
-
+#deserialize data
 pickle.dump(rf_classifier, open('example_weights_rf_classifier.pkl', "wb"))
 
 # def interpret_fetal_health(prediction):
